@@ -2,3 +2,6 @@ Using H2 embedded database, the goal was to create a car rental service that had
 Each company had its own list of cars that could be rent by customers.
 The databased contained tables that were linked using a foreign key.
 This was my first attempt at using any sort of database with Java programming.
+
+The menu system used can be some what confusing to understand from the code because the task requires
+jumping back and forth between various menus.
