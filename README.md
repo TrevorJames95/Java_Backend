@@ -1,1 +1,1 @@
-#Java backend projects from JetBrains Academy.
+Java backend projects from JetBrains Academy.
