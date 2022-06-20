@@ -1,0 +1,2855 @@
+type: edu
+files:
+- name: src/antifraud/AntiFraudApplication.java
+  visible: true
+  text: |-
+    package antifraud;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+    @SpringBootApplication
+    public class AntiFraudApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(AntiFraudApplication.class, args);
+        }
+    }
+  learner_created: false
+- name: build.gradle
+  visible: true
+  text: |-
+    plugins {
+        id 'java'
+        id 'org.springframework.boot' version '2.3.1.RELEASE'
+        id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    }
+
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceSets.main.resources.srcDirs = ["src/resources"]
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
+    }
+  learner_created: false
+- name: src/resources/application.properties
+  visible: true
+  text: |-
+    server.port=28852
+    server.error.include-message=always
+    management.endpoints.web.exposure.include=*
+    management.endpoint.shutdown.enabled=true
+    spring.jackson.serialization.INDENT_OUTPUT=true
+  learner_created: false
+- name: test/AntiFraudTest.java
+  visible: false
+  text: |-
+    import antifraud.AntiFraudApplication;
+    import com.google.gson.JsonArray;
+    import com.google.gson.JsonObject;
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.dynamic.input.DynamicTesting;
+    import org.hyperskill.hstest.exception.outcomes.UnexpectedError;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.mocks.web.request.HttpRequest;
+    import org.hyperskill.hstest.mocks.web.response.HttpResponse;
+    import org.hyperskill.hstest.stage.SpringTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+
+    import java.util.ArrayList;
+    import java.util.List;
+
+    import static org.hyperskill.hstest.common.JsonUtils.getJson;
+    import static org.hyperskill.hstest.testing.expect.Expectation.expect;
+    import static org.hyperskill.hstest.testing.expect.json.JsonChecker.*;
+
+    class TestHint {
+        private final String apiPath;
+        private final String requestBody;
+        private final String message;
+
+        public TestHint(String apiPath, String requestBody, String message) {
+            this.apiPath = apiPath;
+            this.requestBody = requestBody;
+            this.message = message;
+        }
+
+        @Override
+        public String toString() {
+            return "Test case\n" +
+                    "Testing api: '" + apiPath + '\'' + "\n" +
+                    (requestBody.length() > 0 ? "request: '" + requestBody + '\'' + "\n" : "") +
+                    "Expectations: '" + message + "'" + "\n" +
+                    "-----";
+        }
+    }
+
+    public class AntiFraudTest extends SpringTest {
+
+        private final String transactionApi = "/api/antifraud/transaction";
+        private final String userApi = "/api/auth/user";
+        private final String userListApi = "/api/auth/list";
+        private final String lockApi = "/api/auth/access";
+        private final String roleApi = "/api/auth/role";
+        private final String ipApi = "/api/antifraud/suspicious-ip";
+        private final String cardApi = "/api/antifraud/stolencard";
+        private final String historyApi = "/api/antifraud/history";
+
+        List<Integer> userIdList = new ArrayList<>();
+
+        private final String administrator = "{\n" +
+                "   \"name\": \"administrator\",\n" +
+                "   \"username\": \"administrator\",\n" +
+                "   \"password\": \"oMoa4VvqnLxW\"\n" +
+                "}";
+
+        private final String johndoe1 = "{\n" +
+                "   \"name\": \"John Doe 1\",\n" +
+                "   \"username\": \"johndoe1\",\n" +
+                "   \"password\": \"oMoa3VvqnLxW\"\n" +
+                "}";
+
+        private final String johndoe2 = "{\n" +
+                "   \"name\": \"John Doe 2\",\n" +
+                "   \"username\": \"johndoe2\",\n" +
+                "   \"password\": \"oMoa5VvqnLxW\"\n" +
+                "}";
+
+        private final String johndoe3 = "{\n" +
+                "   \"name\": \"John Doe 3\",\n" +
+                "   \"username\": \"johndoe3\",\n" +
+                "   \"password\": \"oMoa6VvqnLxW\"\n" +
+                "}";
+
+        private final String wronguser1 = "{\n" +
+                "   \"name\": \"John Doe 1\",\n" +
+                "   \"password\": \"oa3VvqnLxW\"\n" +
+                "}";
+
+        private final String wronguser2 = "{\n" +
+                "   \"name\": \"John Doe 2\",\n" +
+                "   \"username\": \"johndoe1\"\n" +
+                "}";
+
+        private final String wronguserCred1 = "{\n" +
+                "   \"name\": \"John Doe 1\",\n" +
+                "   \"username\": \"johndoe1\",\n" +
+                "   \"password\": \"oa3VvqnLxW\"\n" +
+                "}";
+
+        private final String wronguserCred2 = "{\n" +
+                "   \"name\": \"John Do\",\n" +
+                "   \"username\": \"johndo\",\n" +
+                "   \"password\": \"oMoa3VvqnLxW\"\n" +
+                "}";
+
+        private final String listAnswer1 = "[ {\n" +
+                "  \"id\" : 1,\n" +
+                "  \"name\" : \"administrator\",\n" +
+                "  \"username\" : \"administrator\",\n" +
+                "  \"role\" : \"ADMINISTRATOR\"\n" +
+                "}, {\n" +
+                "  \"id\" : 2,\n" +
+                "  \"name\" : \"John Doe 1\",\n" +
+                "  \"username\" : \"johndoe1\",\n" +
+                "  \"role\" : \"MERCHANT\"\n" +
+                "}, {\n" +
+                "  \"id\" : 4,\n" +
+                "  \"name\" : \"John Doe 2\",\n" +
+                "  \"username\" : \"johndoe2\",\n" +
+                "  \"role\" : \"MERCHANT\"\n" +
+                "} ]";
+
+        private final String listAnswer2 = "[ {\n" +
+                "  \"id\" : 1,\n" +
+                "  \"name\" : \"administrator\",\n" +
+                "  \"username\" : \"administrator\",\n" +
+                "  \"role\" : \"ADMINISTRATOR\"\n" +
+                "}, {\n" +
+                "  \"id\" : 4,\n" +
+                "  \"name\" : \"John Doe 2\",\n" +
+                "  \"username\" : \"johndoe2\",\n" +
+                "  \"role\" : \"MERCHANT\"\n" +
+                "} ]";
+
+        private final String listAnswer3 = "[ {\n" +
+                "  \"id\" : 1,\n" +
+                "  \"name\" : \"administrator\",\n" +
+                "  \"username\" : \"administrator\",\n" +
+                "  \"role\" : \"ADMINISTRATOR\"\n" +
+                "}, {\n" +
+                "  \"id\" : 4,\n" +
+                "  \"name\" : \"John Doe 2\",\n" +
+                "  \"username\" : \"johndoe2\",\n" +
+                "  \"role\" : \"SUPPORT\"\n" +
+                "} ]";
+
+        private final String tr1 = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String tr2 = "{\n" +
+                "  \"amount\": 199,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:01:00\"\n" +
+                "}";
+
+        private final String tr3 = "{\n" +
+                "  \"amount\": 200,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:02:00\"\n" +
+                "}";
+
+        private final String tr4 = "{\n" +
+                "  \"amount\": 201,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:03:00\"\n" +
+                "}";
+
+        private final String tr5 = "{\n" +
+                "  \"amount\": 1499,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:04:00\"\n" +
+                "}";
+
+        private final String tr6 = "{\n" +
+                "  \"amount\": 1500,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:05:00\"\n" +
+                "}";
+
+        private final String tr7 = "{\n" +
+                "  \"amount\": 1501,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:06:00\"\n" +
+                "}";
+
+        private final String tr8 = "{\n" +
+                "  \"amount\": 2000,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:07:00\"\n" +
+                "}";
+
+        private final String tr9 = "{\n" +
+                "  \"amount\": 210,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T16:03:00\"\n" +
+                "}";
+
+        private final String tr10 = "{\n" +
+                "  \"amount\": 202,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T16:04:00\"\n" +
+                "}";
+
+        private final String tr11 = "{\n" +
+                "  \"amount\": 203,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T19:04:00\"\n" +
+                "}";
+
+        private final String tr12 = "{\n" +
+                "  \"amount\": 1161,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T19:04:00\"\n" +
+                "}";
+
+        private final String tr13 = "{\n" +
+                "  \"amount\": 163,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T19:08:00\"\n" +
+                "}";
+
+        private final String tr14 = "{\n" +
+                "  \"amount\": 131,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T19:18:00\"\n" +
+                "}";
+
+        private final String tr15 = "{\n" +
+                "  \"amount\": 929,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T19:28:00\"\n" +
+                "}";
+
+        private final String tr16 = "{\n" +
+                "  \"amount\": 289,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T20:28:00\"\n" +
+                "}";
+
+        private final String tr17 = "{\n" +
+                "  \"amount\": 930,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T20:28:00\"\n" +
+                "}";
+
+        private final String tr18 = "{\n" +
+                "  \"amount\": 931,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-23T20:28:00\"\n" +
+                "}";
+
+        private final String trW1 = "{\n" +
+                "  \"amount\": -1,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trW2 = "{\n" +
+                "  \"amount\": 0,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trW3 = "{\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trW4 = "{\n" +
+                "  \"amount\": \" \",\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trW5 = "{\n" +
+                "  \"amount\": \"\",\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trW6 = "{ }";
+
+        private final String trP1 = "{\n" +
+                "  \"amount\": 1000,\n" +
+                "  \"ip\": \"192.168.1.67\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trP2 = "{\n" +
+                "  \"amount\": 1000,\n" +
+                "  \"ip\": \"192.168.1.1\",\n" +
+                "  \"number\": \"4000003305160034\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trP3 = "{\n" +
+                "  \"amount\": 1000,\n" +
+                "  \"ip\": \"192.168.1.67\",\n" +
+                "  \"number\": \"4000003305160034\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        private final String trP4 = "{\n" +
+                "  \"amount\": 2000,\n" +
+                "  \"ip\": \"192.168.1.67\",\n" +
+                "  \"number\": \"4000003305160034\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T16:00:00\"\n" +
+                "}";
+
+        // correlation rules
+        private final String corr1IP = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:10:00\"\n" +
+                "}";
+
+        private final String corr2IP = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.3\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:11:00\"\n" +
+                "}";
+
+        private final String corr22IP = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.3\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:12:00\"\n" +
+                "}";
+
+        private final String corr3IP = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.4\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:12:00\"\n" +
+                "}";
+
+        private final String corr4IP = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.5\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:13:00\"\n" +
+                "}";
+
+        private final String corr5IP = "{\n" +
+                "  \"amount\": 2000,\n" +
+                "  \"ip\": \"192.168.1.5\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-22T17:14:00\"\n" +
+                "}";
+
+        private final String corr1Reg = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"EAP\",\n" +
+                "  \"date\": \"2022-01-21T17:10:00\"\n" +
+                "}";
+
+        private final String corr2Reg = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"ECA\",\n" +
+                "  \"date\": \"2022-01-21T17:11:00\"\n" +
+                "}";
+
+        private final String corr22Reg = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"ECA\",\n" +
+                "  \"date\": \"2022-01-21T17:12:00\"\n" +
+                "}";
+
+        private final String corr3Reg = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"HIC\",\n" +
+                "  \"date\": \"2022-01-21T17:13:00\"\n" +
+                "}";
+
+        private final String corr4Reg = "{\n" +
+                "  \"amount\": 1,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"SSA\",\n" +
+                "  \"date\": \"2022-01-21T17:14:00\"\n" +
+                "}";
+
+        private final String corr5Reg = "{\n" +
+                "  \"amount\": 2000,\n" +
+                "  \"ip\": \"192.168.1.2\",\n" +
+                "  \"number\": \"4000008449433403\",\n" +
+                "  \"region\": \"SA\",\n" +
+                "  \"date\": \"2022-01-21T17:15:00\"\n" +
+                "}";
+
+
+
+
+
+        private final String ipAnswer = "[ {\n" +
+                "  \"id\" : 1,\n" +
+                "  \"ip\" : \"192.168.1.66\"\n" +
+                "}, {\n" +
+                "  \"id\" : 2,\n" +
+                "  \"ip\" : \"192.168.1.67\"\n" +
+                "} ]";
+
+        private final String ipAnswer2 = "[ {\n" +
+                "  \"id\" : 2,\n" +
+                "  \"ip\" : \"192.168.1.67\"\n" +
+                "} ]";
+
+        private final String ipAnswerEmpty = "[]";
+
+        private final String cardAnswerEmpty = "[]";
+
+        private final String cardAnswer = "[ {\n" +
+                "  \"id\" : 1,\n" +
+                "  \"number\" : \"4000003305061034\"\n" +
+                "}, {\n" +
+                "  \"id\" : 2,\n" +
+                "  \"number\" : \"4000003305160034\"\n" +
+                "} ]";
+
+        private final String cardAnswer2 = "[ {\n" +
+                "  \"id\" : 2,\n" +
+                "  \"number\" : \"4000003305160034\"\n" +
+                "} ]";
+
+        private final String historyAnswer = "[ {\n" +
+                "  \"transactionId\" : 1,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 2,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 3,\n" +
+                "  \"amount\" : 199,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:01:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 4,\n" +
+                "  \"amount\" : 200,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:02:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 5,\n" +
+                "  \"amount\" : 201,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:03:00\",\n" +
+                "  \"result\" : \"MANUAL_PROCESSING\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 6,\n" +
+                "  \"amount\" : 1499,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:04:00\",\n" +
+                "  \"result\" : \"MANUAL_PROCESSING\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 7,\n" +
+                "  \"amount\" : 1500,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:05:00\",\n" +
+                "  \"result\" : \"MANUAL_PROCESSING\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 8,\n" +
+                "  \"amount\" : 1501,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:06:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 9,\n" +
+                "  \"amount\" : 2000,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:07:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 10,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 11,\n" +
+                "  \"amount\" : 1000,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.67\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 12,\n" +
+                "  \"amount\" : 1000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 13,\n" +
+                "  \"amount\" : 1000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.67\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 14,\n" +
+                "  \"amount\" : 2000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.67\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 15,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:10:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 16,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.3\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:11:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 17,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.3\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:12:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 18,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.4\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:12:00\",\n" +
+                "  \"result\" : \"MANUAL_PROCESSING\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 19,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.5\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:13:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 20,\n" +
+                "  \"amount\" : 2000,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.5\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T17:14:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 21,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-21T17:10:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 22,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"ECA\",\n" +
+                "  \"date\" : \"2022-01-21T17:11:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 23,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"ECA\",\n" +
+                "  \"date\" : \"2022-01-21T17:12:00\",\n" +
+                "  \"result\" : \"ALLOWED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 24,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"HIC\",\n" +
+                "  \"date\" : \"2022-01-21T17:13:00\",\n" +
+                "  \"result\" : \"MANUAL_PROCESSING\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 25,\n" +
+                "  \"amount\" : 1,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"SSA\",\n" +
+                "  \"date\" : \"2022-01-21T17:14:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 26,\n" +
+                "  \"amount\" : 2000,\n" +
+                "  \"number\" : \"4000008449433403\",\n" +
+                "  \"ip\" : \"192.168.1.2\",\n" +
+                "  \"region\" : \"SA\",\n" +
+                "  \"date\" : \"2022-01-21T17:15:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "} ]\n";
+
+        private final String historyAnswer2 = "[ {\n" +
+                "  \"transactionId\" : 12,\n" +
+                "  \"amount\" : 1000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.1\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 13,\n" +
+                "  \"amount\" : 1000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.67\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "}, {\n" +
+                "  \"transactionId\" : 14,\n" +
+                "  \"amount\" : 2000,\n" +
+                "  \"number\" : \"4000003305160034\",\n" +
+                "  \"ip\" : \"192.168.1.67\",\n" +
+                "  \"region\" : \"EAP\",\n" +
+                "  \"date\" : \"2022-01-22T16:00:00\",\n" +
+                "  \"result\" : \"PROHIBITED\",\n" +
+                "  \"feedback\" : \"\"\n" +
+                "} ]";
+
+
+
+
+        public AntiFraudTest() {
+            super(AntiFraudApplication.class, "../service_db.mv.db");
+        }
+
+        /**
+         * Method for restarting application
+         *
+         */
+        private CheckResult restartApplication() {
+            try {
+                reloadSpring();
+            } catch (Exception ex) {
+                throw new UnexpectedError(ex.getMessage());
+            }
+            return CheckResult.correct();
+        }
+
+        private HttpResponse checkResponseStatus(String user, String body,
+                                                 int status, String api, String method) {
+            HttpRequest request = null;
+            switch (method) {
+                case "GET":
+                    request = get(api);
+                    break;
+                case "POST":
+                    request = post(api, body);
+                    break;
+                case "PUT":
+                    request = put(api, body);
+                    break;
+                case "DELETE":
+                    request = delete(api);
+                    break;
+            }
+
+            if (user != null) {
+                JsonObject userJson = getJson(user).getAsJsonObject();
+                String password = userJson.get("password").getAsString();
+                String login = userJson.get("username").getAsString().toLowerCase();
+                request = request.basicAuth(login, password);
+            }
+            HttpResponse response = request.send();
+
+            if (response.getStatusCode() != status) {
+                throw new WrongAnswer(method + " " + api  + " should respond with "
+                        + "status code " + status + ", responded: " + response.getStatusCode() + "\n"
+                        + "Response body:\n" + response.getContent() + "\n");
+            }
+            return response;
+        }
+
+        public boolean isNumeric(String strNum) {
+            if (strNum == null) {
+                return false;
+            }
+            try {
+                long l = Long.parseLong(strNum);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+            return true;
+        }
+
+        CheckResult testAddUser(String body, int status, String role, TestHint hint) {
+
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(null, body, status, userApi, "POST");
+
+            if (response.getStatusCode() == 201) {
+
+                JsonObject rightResponse = getJson(body).getAsJsonObject();
+                rightResponse.remove("password");
+
+                // Check is it JSON in response or something else
+                if (!response.getJson().isJsonObject()) {
+                    return CheckResult.wrong("Wrong object in response, expected JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonObject jsonResponse = response.getJson().getAsJsonObject();
+
+                // Check if password is presence in response
+                if (jsonResponse.get("password") != null) {
+                    return CheckResult.wrong("You must remove password from response\n" +
+                            jsonResponse);
+                }
+
+                if (jsonResponse.get("id").isJsonNull()) {
+                    return CheckResult.wrong("Response must contain user ID\n" +
+                            "Received response:\n" +
+                            jsonResponse);
+                }
+
+                if (userIdList.contains(jsonResponse.get("id").getAsInt())) {
+                    return CheckResult.wrong("User ID must be unique!\n" +
+                            "Received response:\n" +
+                            jsonResponse);
+                }
+
+                rightResponse.addProperty("id", jsonResponse.get("id").toString());
+                // Check JSON in response
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("id", isInteger())
+                                .value("name", rightResponse.get("name").getAsString())
+                                .value("role", role)
+                                .value("username", isString(s -> s.equalsIgnoreCase(rightResponse.get("username").getAsString())))
+                );
+                userIdList.add(jsonResponse.get("id").getAsInt());
+            }
+            return CheckResult.correct();
+        }
+
+        CheckResult testDeleteUser(String body, int status, String user, TestHint hint) {
+
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(body, "", status, userApi + "/" + user, "DELETE");
+
+            if (response.getStatusCode() == 200) {
+
+                // Check is it JSON in response or something else
+                if (!response.getJson().isJsonObject()) {
+                    return CheckResult.wrong("Wrong object in response, expected JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonObject jsonResponse = response.getJson().getAsJsonObject();
+
+                // Check JSON in response
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("status", "Deleted successfully!")
+                                .value("username", isString(s -> s.equalsIgnoreCase(user)))
+                );
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testListUser(String user, int status, String answer,
+                                         int position, TestHint hint) {
+
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, userListApi, "GET");
+
+            if (response.getStatusCode() == 200) {
+                // Check is it array of JSON in response or something else
+                if (!response.getJson().isJsonArray()) {
+                    return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonArray correctJson = getJson(answer).getAsJsonArray();
+                JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+                if (responseJson.size() == 0) {
+                    throw new WrongAnswer("Empty array in response!");
+                }
+
+                if (responseJson.size() != position + 1) {
+                    throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                            " users in response, must be - " + (position + 1));
+                }
+
+                // Check JSON in response
+                expect(responseJson.get(position).toString()).asJson().check(
+                        isObject()
+                                .value("id", isInteger())
+                                .value("name", correctJson.get(position).getAsJsonObject().get("name").getAsString())
+                                .value("role", correctJson.get(position).getAsJsonObject().get("role").getAsString())
+                                .value("username",
+                                        isString(s -> s.equalsIgnoreCase(correctJson.get(position).getAsJsonObject()
+                                                .get("username").getAsString()))
+                                ));
+
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testLock(String user, int status, String operation, String username, TestHint hint) {
+            System.out.println(hint.toString());
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("username", username);
+            jsonBody.addProperty("operation", operation);
+
+            HttpResponse response = checkResponseStatus(user, jsonBody.toString(), status, lockApi, "PUT");
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("status", isString(s ->
+                                        s.equalsIgnoreCase("User " + username + " " + operation + "ed!"))));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testRole(String user, int status, String role, String username, TestHint hint) {
+            System.out.println(hint.toString());
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("username", username);
+            jsonBody.addProperty("role", role);
+
+            HttpResponse response = checkResponseStatus(user, jsonBody.toString(), status, roleApi, "PUT");
+
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("id", isInteger())
+                                .value("name", isString())
+                                .value("role", role)
+                                .value("username", isString(s -> s.equalsIgnoreCase(username))));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testTransaction(String user, String api, String method, int status, String body,
+                                            String answer, String answer2, TestHint hint) {
+
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, body, status, api, method);
+
+            // Check JSON in response
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("result", answer)
+                                .value("info", answer2));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testAddIP(String user, int status, String ip, TestHint hint) {
+            System.out.println(hint.toString());
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("ip", ip);
+
+            HttpResponse response = checkResponseStatus(user, jsonBody.toString(), status, ipApi, "POST");
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("id", isInteger())
+                                .value("ip", ip));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testDeleteIP(String user, int status, String ip, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, ipApi + "/" + ip, "DELETE");
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("status", "IP " + ip + " successfully removed!"));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testAddCard(String user, int status, String number, TestHint hint) {
+            System.out.println(hint.toString());
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("number", number);
+
+            HttpResponse response = checkResponseStatus(user, jsonBody.toString(), status, cardApi, "POST");
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("id", isInteger())
+                                .value("number", number));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testDeleteCard(String user, int status, String number, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, cardApi + "/" + number, "DELETE");
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("status", "Card " + number + " successfully removed!"));
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testGetIP(String user, int status, String answer, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, ipApi, "GET");
+
+            if (response.getStatusCode() == 200) {
+                if (!response.getJson().isJsonArray()) {
+                    return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonArray correctJson = getJson(answer).getAsJsonArray();
+                JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+
+                if (responseJson.size() != correctJson.size()) {
+                    throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                            " objects in response, must be - " + correctJson.size());
+                }
+
+                // Check JSON in response
+                for (int i =0; i < correctJson.size(); i++) {
+                    expect(responseJson.get(i).toString()).asJson().check(
+                            isObject()
+                                    .value("id", isInteger())
+                                    .value("ip", correctJson.get(i).getAsJsonObject().get("ip").getAsString())
+                    );
+                }
+
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testGetCard(String user, int status, String answer, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, cardApi, "GET");
+
+            if (response.getStatusCode() == 200) {
+                if (!response.getJson().isJsonArray()) {
+                    return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonArray correctJson = getJson(answer).getAsJsonArray();
+                JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+
+                if (responseJson.size() != correctJson.size()) {
+                    throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                            " objects in response, must be - " + correctJson.size());
+                }
+
+                // Check JSON in response
+                for (int i =0; i < correctJson.size(); i++) {
+                    expect(responseJson.get(i).toString()).asJson().check(
+                            isObject()
+                                    .value("id", isInteger())
+                                    .value("number", correctJson.get(i).getAsJsonObject().get("number").getAsString())
+                    );
+                }
+
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testGetTr(String user, int status, String answer, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status, historyApi, "GET");
+
+            if (response.getStatusCode() == 200) {
+                if (!response.getJson().isJsonArray()) {
+                    return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonArray correctJson = getJson(answer).getAsJsonArray();
+                JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+
+                if (responseJson.size() != correctJson.size()) {
+                    throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                            " objects in response, must be - " + correctJson.size());
+                }
+
+                // Check JSON in response
+                for (int i =0; i < correctJson.size(); i++) {
+                    expect(responseJson.get(i).toString()).asJson().check(
+                            isObject()
+                                    .value("transactionId", isInteger())
+                                    .value("amount", correctJson.get(i).getAsJsonObject().get("amount").getAsLong())
+                                    .value("number", correctJson.get(i).getAsJsonObject().get("number").getAsString())
+                                    .value("ip", correctJson.get(i).getAsJsonObject().get("ip").getAsString())
+                                    .value("region", correctJson.get(i).getAsJsonObject().get("region").getAsString())
+                                    .value("date", correctJson.get(i).getAsJsonObject().get("date").getAsString())
+                                    .value("result", correctJson.get(i).getAsJsonObject().get("result").getAsString())
+                                    .value("feedback", correctJson.get(i).getAsJsonObject().get("feedback").getAsString())
+                    );
+                }
+
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testGetTrByNumber(String user, int status, String answer,
+                                              String number, TestHint hint) {
+            System.out.println(hint.toString());
+
+            HttpResponse response = checkResponseStatus(user, "", status,
+                    historyApi + "/" + number, "GET");
+
+            if (response.getStatusCode() == 200) {
+                if (!response.getJson().isJsonArray()) {
+                    return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                            response.getContent().getClass());
+
+                }
+
+                JsonArray correctJson = getJson(answer).getAsJsonArray();
+                JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+
+                if (responseJson.size() != correctJson.size()) {
+                    throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                            " objects in response, must be - " + correctJson.size());
+                }
+
+                // Check JSON in response
+                for (int i =0; i < correctJson.size(); i++) {
+                    expect(responseJson.get(i).toString()).asJson().check(
+                            isObject()
+                                    .value("transactionId", isInteger())
+                                    .value("amount", correctJson.get(i).getAsJsonObject().get("amount").getAsLong())
+                                    .value("number", correctJson.get(i).getAsJsonObject().get("number").getAsString())
+                                    .value("ip", correctJson.get(i).getAsJsonObject().get("ip").getAsString())
+                                    .value("region", correctJson.get(i).getAsJsonObject().get("region").getAsString())
+                                    .value("date", correctJson.get(i).getAsJsonObject().get("date").getAsString())
+                                    .value("result", correctJson.get(i).getAsJsonObject().get("result").getAsString())
+                                    .value("feedback", correctJson.get(i).getAsJsonObject().get("feedback").getAsString())
+                    );
+                }
+
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testFeed(String userS, String userM, int status, int position,
+                                     String fb, TestHint hint) {
+            System.out.println(hint.toString());
+            HttpResponse response = checkResponseStatus(userS, "", 200, historyApi, "GET");
+
+            if (!response.getJson().isJsonArray()) {
+                return CheckResult.wrong("Wrong object in response, expected array of JSON but was \n" +
+                        response.getContent().getClass());
+
+            }
+
+            JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+            if (responseJson.size() < (position + 1)) {
+                throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                        " transactions in history, must be at least - " + (position + 1));
+            }
+
+            if (!responseJson.get(position).getAsJsonObject().has("transactionId")) {
+                return CheckResult.wrong("Json in response must have - 'id' field");
+            }
+
+            Long id = responseJson.get(position).getAsJsonObject().get("transactionId").getAsLong();
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("transactionId", id);
+            jsonBody.addProperty("feedback", fb);
+
+            response = checkResponseStatus(userM, jsonBody.toString(), status, transactionApi, "PUT");
+
+            JsonObject answerJson = responseJson.get(position).getAsJsonObject();
+
+            if (response.getStatusCode() == 200) {
+                expect(response.getContent()).asJson().check(
+                        isObject()
+                                .value("transactionId", isInteger())
+                                .value("amount", answerJson.get("amount").getAsLong())
+                                .value("ip", answerJson.get("ip").getAsString())
+                                .value("number", answerJson.get("number").getAsString())
+                                .value("region", answerJson.get("region").getAsString())
+                                .value("date", answerJson.get("date").getAsString())
+                                .value("result", answerJson.get("result").getAsString())
+                                .value("feedback", fb)
+                );
+            }
+            return CheckResult.correct();
+        }
+
+        private CheckResult testNotFoundFeed(String userS, String userM, int status, int position,
+                                             String fb, TestHint hint) {
+            System.out.println(hint.toString());
+            HttpResponse response = checkResponseStatus(userS, "", 200, historyApi, "GET");
+            JsonArray responseJson = getJson(response.getContent()).getAsJsonArray();
+            if (responseJson.size() < (position + 1)) {
+                throw new WrongAnswer("Incorrect number - " +  responseJson.size() +
+                        " transactions in history, must be at least - " + (position + 1));
+            }
+            Long id = responseJson.get(position).getAsJsonObject().get("transactionId").getAsLong() + 12345L;
+
+            JsonObject jsonBody = new JsonObject();
+            jsonBody.addProperty("transactionId", id);
+            jsonBody.addProperty("feedback", fb);
+
+            return CheckResult.correct();
+        }
+
+
+        @DynamicTest
+        DynamicTesting[] dt = new DynamicTesting[]{
+                // Test POST request for signup api
+                () -> testAddUser(wronguser1, 400, "MERCHANT",
+                        new TestHint(userApi, wronguser1, "In case of wrong data in request, endpoint" +
+                                " must respond with BAD REQUEST  status (400).")), // 1
+
+                () -> testAddUser(wronguser2, 400, "MERCHANT",
+                        new TestHint(userApi, wronguser2, "In case of wrong data in request, endpoint" +
+                                " must respond with BAD REQUEST  status (400).")), // 2
+
+                () -> testAddUser(administrator, 201, "ADMINISTRATOR",
+                        new TestHint(userApi, johndoe1, "If user successfully added, endpoint" +
+                                " must respond with HTTP CREATED status (201) ")), // 3
+
+                () -> testListUser(administrator, 200,  listAnswer1, 0,
+                        new TestHint(userListApi, "", "Endpoint must respond with HTTP OK status (200)" +
+                                " and body with array of objects representing the users sorted by ID in ascending order.")), // 4
+
+
+                () -> testAddUser(johndoe1, 201, "MERCHANT",
+                        new TestHint(userApi, johndoe1, "If user successfully added, endpoint" +
+                                " must respond with HTTP CREATED status (201) ")), // 5
+
+                () -> testListUser(administrator, 200,  listAnswer1, 1,
+                        new TestHint(userListApi, "", "Endpoint must respond with HTTP OK status (200)" +
+                                " and body with array of objects representing the users sorted by ID in ascending order.")), // 6
+
+                () -> testListUser(wronguserCred1, 401,  listAnswer1, 0,
+                        new TestHint(userListApi, "", "A user with incorrect credentials is not allowed")), // 7
+
+                () -> testListUser(wronguserCred2, 401,  listAnswer1, 0,
+                        new TestHint(userListApi, "", "A user with incorrect credentials is not allowed")), // 8
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 401,tr1,
+                        "ALLOWED", "none",
+                        new TestHint(transactionApi, "", "Merchant after registration" +
+                                " must be LOCKED")), // 9
+
+                () -> testLock(administrator, 200, "UNLOCK", "johndoe1",
+                        new TestHint(lockApi, "", "A user johndoe1 must be UNLOCKED")), // 10
+
+                () -> testRole(administrator,200,"SUPPORT", "johndoe1",
+                        new TestHint(roleApi, "", "If a role successfully changed," +
+                                " respond with the HTTP OK status (200)")), // 11
+
+                () -> testGetTr(johndoe1, 200, "[]",
+                        new TestHint(historyApi, "", "User johndoe1 must be unlocked." +
+                                "Endpoint must respond with the HTTP OK status (200) and" +
+                                " empty array in case if history is empty.")), // 12
+
+
+                () -> testRole(administrator,200,"MERCHANT", "johndoe1",
+                        new TestHint(roleApi, "", "If a role successfully changed," +
+                                " respond with the HTTP OK status (200)")), // 13
+
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200,tr1,
+                        "ALLOWED", "none",
+                        new TestHint(transactionApi, "", "A user johndoe1 must be UNLOCKED")), // 14
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200,tr1,
+                        "ALLOWED", "none",
+                        new TestHint(transactionApi, "amount = 1", "Result validating of Transaction" +
+                                " must be 'ALLOWED'")), // 15
+
+                // Testing persistence
+                () -> restartApplication(), // 16
+
+                () -> testListUser(administrator, 200,  listAnswer1, 1,
+                        new TestHint(userListApi, "", "After restart user must exist")), // 17
+
+                () -> testAddUser(johndoe1, 409, "MERCHANT",
+                        new TestHint(userApi, johndoe1, "In case of an attempt to register an existing user," +
+                                " endpoint must respond with HTTP CONFLICT status (409).")), // 18
+
+                () -> testAddUser(johndoe2, 201, "MERCHANT",
+                        new TestHint(userApi, johndoe2, "If user successfully added, endpoint" +
+                                " must respond with HTTP CREATED status (201) ")), // 19
+
+                () -> testListUser(administrator, 200,  listAnswer1, 2,
+                        new TestHint(userListApi, "", "Endpoint must respond with HTTP OK status (200)" +
+                                " and body with array of objects representing the users sorted by ID in ascending order.")), // 20
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr2,
+                        "ALLOWED", "none",
+                        new TestHint(transactionApi, "amount = 199", "Result validating of Transaction" +
+                                " must be 'ALLOWED'")), // 21
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr3,
+                        "ALLOWED", "none",
+                        new TestHint(transactionApi, "amount = 200", "Result validating of Transaction" +
+                                " must be 'ALLOWED'")), // 22
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr4,
+                        "MANUAL_PROCESSING", "amount",
+                        new TestHint(transactionApi, "amount = 201", "Result validating of Transaction" +
+                                " must be 'MANUAL_PROCESSING'")), // 23
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr5,
+                        "MANUAL_PROCESSING", "amount",
+                        new TestHint(transactionApi, "amount = 1499", "Result validating of Transaction" +
+                                " must be 'MANUAL_PROCESSING'")), // 24
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr6,
+                        "MANUAL_PROCESSING", "amount",
+                        new TestHint(transactionApi, "amount = 1500", "Result validating of Transaction" +
+                                " must be 'MANUAL_PROCESSING'")), // 25
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr7,
+                        "PROHIBITED", "amount",
+                        new TestHint(transactionApi, "amount = 1501", "Result validating of Transaction" +
+                                " must be 'PROHIBITED'")), // 26
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 200, tr8,
+                        "PROHIBITED", "amount",
+                        new TestHint(transactionApi, "amount = 2000", "Result validating of Transaction" +
+                                " must be 'PROHIBITED'")), // 27
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400, trW1,
+                        "Wrong request!", "none",
+                        new TestHint(transactionApi, "amount = -1", "Response status" +
+                                " must be 'Bad request'")), // 28
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400, trW2,
+                        "Wrong request!", "none",
+                        new TestHint(transactionApi, "amount = 0", "Response status" +
+                                " must be 'Bad request'")), // 29
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400,trW3,
+                        "Wrong request!", "none",
+                        new TestHint(transactionApi, "amount = null", "Response status" +
+                                " must be 'Bad request'")), // 30
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400,trW4,
+                        "Wrong request!", "none",
+                        new TestHint(transactionApi, "amount = \"\"", "Response status" +
+                                " must be 'Bad request'")), // 31
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400, trW5,
+                        "Wrong request!",  "none",
+                        new TestHint(transactionApi, "amount = \" \"", "Response status" +
+                                " must be 'Bad request'")), // 32
+
+                () -> testTransaction(johndoe1, transactionApi, "POST", 400, trW6,
+                        "Wrong request!",   "none",
+                        new TestHint(transactionApi, "empty body", "Response status" +
+                                " must be 'Bad request'")), // 33
+
+                () -> testDeleteUser(administrator,404,"somebody",
+                        new TestHint(userApi, userApi + "/" + "somebody", "If a user is not found," +
+                                " respond with HTTP Not Found status (404).")), // 34
+
+                () -> testDeleteUser(administrator,200,"johndoe1",
+                        new TestHint(userApi, userApi + "/" + "johndoe1", "The endpoint must delete" +
+                                " the user and respond with HTTP OK status (200)")), // 35
+
+                () -> testListUser(administrator, 200,  listAnswer2, 1,
+                        new TestHint(userListApi, "", "User 'johndoe1' must be delete")), // 36
+
+                () -> testRole(administrator,404,"MERCHANT", "johndoe22",
+                        new TestHint(roleApi, "", "If a user is not found, endpoint" +
+                                " must respond with the HTTP Not Found status (404).")), // 37
+
+                () -> testRole(administrator,400,"USER", "johndoe2",
+                        new TestHint(roleApi, "", "If a role is not found, endpoint" +
+                                " must respond with the HTTP Bad Request status (400).")), // 38
+
+                () -> testRole(administrator,400,"ADMINISTRATOR", "johndoe2",
+                        new TestHint(roleApi, "", "If a role is ADMINISTRATOR, endpoint" +
+                                " must respond with the HTTP Bad Request status (400).")), // 39
+
+                () -> testRole(administrator,200,"SUPPORT", "johndoe2",
+                        new TestHint(roleApi, "", "If a role successfully changed," +
+                                " respond with the HTTP OK status (200)")), // 40
+
+                () -> testRole(administrator,409,"SUPPORT", "johndoe2",
+                        new TestHint(roleApi, "", "If a role already assigned to a user," +
+                                " endpoint must respond with the HTTP Conflict status (409).")), // 41
+
+                () -> testLock(administrator, 200, "UNLOCK", "johndoe2",
+                        new TestHint(lockApi, "", "A user johndoe2 must be UNLOCKED")), // 42
+
+                () -> testListUser(johndoe2, 200,  listAnswer3, 1,
+                        new TestHint(userListApi, "", "Role for user 'johndoe2" +
+                                "' must be changed to SUPPORT")), // 43
+
+                () -> testTransaction(johndoe2, transactionApi, "POST", 403, tr1,
+                        "ALLOWED",   "none",
+                        new TestHint(transactionApi, "", "Role MERCHANT must be removed from" +
+                                " user johndoe2!")), // 44
+
+                // test Locking
+                () -> testAddUser(johndoe3, 201, "MERCHANT",
+                        new TestHint(userApi, johndoe3, "If user successfully added, endpoint" +
+                                " must respond with HTTP CREATED status (201) ")), // 45
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 401, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "MERCHANT user after registration" +
+                                " must be LOCKED")), // 46
+
+                () -> testLock(administrator, 200, "UNLOCK", "johndoe3",
+                        new TestHint(lockApi, "", "A user johndoe3 must be UNLOCKED")), // 47
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "A user johndoe3 must be UNLOCKED")), // 48
+
+                () -> testLock(administrator, 200, "LOCK", "johndoe3",
+                        new TestHint(lockApi, "", "A user johndoe3 must be LOCKED")), // 49
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 401, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "A user johndoe3 must be LOCKED")), // 50
+
+                () -> testLock(administrator, 200, "UNLOCK", "johndoe3",
+                        new TestHint(lockApi, "", "A user johndoe3 must be UNLOCKED")), // 51
+
+                // test role model
+                () -> testTransaction(administrator, transactionApi, "POST", 403, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to " + transactionApi)), // 52
+
+                () -> testTransaction(johndoe2, transactionApi, "POST", 403, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "A user with role SUPPORT" +
+                                " must not have access to " + transactionApi)), // 53
+
+                () -> testTransaction(null, transactionApi, "POST", 401, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "A user with role ANONYMOUS" +
+                                " must not have access to " + transactionApi)), // 54
+
+                () -> testDeleteUser(null,401,"johndoe1",
+                        new TestHint(userApi, "", "A user with role ANONYMOUS" +
+                                " must not have access to DELETE " + userApi)), // 55
+
+                () -> testDeleteUser(johndoe2,403,"johndoe1",
+                        new TestHint(userApi, "", "A user with role SUPPORT" +
+                                " must not have access to DELETE " + userApi)), // 56
+
+                () -> testDeleteUser(johndoe3,403,"johndoe1",
+                        new TestHint(userApi, "", "A user with role MERCHANT" +
+                                " must not have access to DELETE " + userApi)), // 57
+
+                () -> testListUser(null, 401,  listAnswer3, 1,
+                        new TestHint(userListApi, "", "A user with role ANONYMOUS" +
+                                " must not have access to " + userListApi)), // 58
+
+                () -> testListUser(johndoe3, 403,  listAnswer3, 1,
+                        new TestHint(userListApi, "", "A user with role MERCHANT" +
+                                " must not have access to " + userListApi)), // 59
+
+                () -> testGetIP(administrator, 403, ipAnswerEmpty,
+                        new TestHint(ipApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to GET " + ipApi)), // 60
+
+                () -> testGetIP(johndoe3, 403, ipAnswerEmpty,
+                        new TestHint(ipApi, "", "A user with role MERCHANT" +
+                                " must not have access to GET " + ipApi)), // 61
+
+                () -> testAddIP(administrator, 403, "192.168.1.66",
+                        new TestHint(ipApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to POST " + ipApi)), // 62
+
+                () -> testAddIP(johndoe3, 403, "192.168.1.66",
+                        new TestHint(ipApi, "", "A user with role MERCHANT" +
+                                " must not have access to POST " + ipApi)), // 63
+
+                () -> testDeleteIP(administrator, 403, "192.168.1.66",
+                        new TestHint(ipApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to DELETE " + ipApi)), // 64
+
+                () -> testDeleteIP(johndoe3, 403, "192.168.1.66",
+                        new TestHint(ipApi, "", "A user with role MERCHANT" +
+                                " must not have access to DELETE " + ipApi)), // 65
+
+                () -> testGetCard(administrator, 403, cardAnswerEmpty,
+                        new TestHint(cardApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to GET " + cardApi)), // 66
+
+                () -> testGetCard(johndoe3, 403, cardAnswerEmpty,
+                        new TestHint(cardApi, "", "A user with role MERCHANT" +
+                                " must not have access to GET " + cardApi)), // 67
+
+                () -> testAddCard(administrator, 403, "4000003305061034",
+                        new TestHint(cardApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to POST " + cardApi)), // 68
+
+                () -> testAddCard(johndoe3, 403, "4000003305061034",
+                        new TestHint(cardApi, "", "A user with role MERCHANT" +
+                                " must not have access to POST " + cardApi)), // 69
+
+                () -> testDeleteIP(administrator, 403, "4000003305061034",
+                        new TestHint(cardApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to DELETE " + cardApi)), // 70
+
+                () -> testDeleteIP(johndoe3, 403, "4000003305061034",
+                        new TestHint(cardApi, "", "A user with role MERCHANT" +
+                                " must not have access to DELETE " + cardApi)), // 71
+
+
+                // Test ip black list
+                () -> testGetIP(johndoe2, 200, ipAnswerEmpty,
+                        new TestHint(ipApi, "", "Endpoint must respond with empty array")), // 72
+
+                () -> testAddIP(johndoe2, 200, "192.168.1.66",
+                        new TestHint(ipApi, "", "IP must be added to Black List")), // 73
+
+                () -> testAddIP(johndoe2, 409, "192.168.1.66",
+                        new TestHint(ipApi, "", "If IP already in database, " +
+                                " endpoint must respond with the HTTP Conflict status (409).")), // 74
+
+                () -> testAddIP(johndoe2, 400, "192.168.351.66",
+                        new TestHint(ipApi, "", "If IP doesn't have right format," +
+                                " respond with HTTP Bad Request status (400)")), // 75
+
+                () -> testAddIP(johndoe2, 400, "192.168.1.",
+                        new TestHint(ipApi, "", "If IP doesn't have right format," +
+                                " respond with HTTP Bad Request status (400)")), // 76
+
+                () -> testAddIP(johndoe2, 200, "192.168.1.67",
+                        new TestHint(ipApi, "", "IP must be added to Black List")), // 77
+
+                () -> testGetIP(johndoe2, 200, ipAnswer,
+                        new TestHint(ipApi, "", "Endpoint must responds with Black List")), // 78
+
+                () -> testDeleteIP(johndoe2, 200, "192.168.1.66",
+                        new TestHint(ipApi, "", "IP must be removed from Black List")), // 79
+
+                () -> testDeleteIP(johndoe2, 404, "192.168.1.66",
+                        new TestHint(ipApi, "", "If IP not found in database, " +
+                                "respond with the HTTP Not Found status (404).")), // 80
+
+                () -> testDeleteIP(johndoe2, 400, "192.168.1.",
+                        new TestHint(ipApi, "", "If IP doesn't have right format," +
+                                " respond with HTTP Bad Request status (400)")), // 81
+
+                () -> testGetIP(johndoe2, 200, ipAnswer2,
+                        new TestHint(ipApi, "", "IP must be removed from Black List")), // 82
+
+
+                // Test card number black list
+                () -> testGetCard(johndoe2, 200, cardAnswerEmpty,
+                        new TestHint(cardApi, "", "Endpoint must respond with empty array")), // 83
+
+                () -> testAddCard(johndoe2, 200, "4000003305061034",
+                        new TestHint(cardApi, "", "A card must be added to Black List")), // 84
+
+                () -> testAddCard(johndoe2, 409, "4000003305061034",
+                        new TestHint(cardApi, "", "If card-number already in database, " +
+                                "endpoint must respond with the HTTP Conflict status (409).")), // 85
+
+                () -> testAddCard(johndoe2, 400, "400000330506103",
+                        new TestHint(cardApi, "", "If card-number doesn't have right format, " +
+                                "endpoint must respond with HTTP Bad Request status (400).")), // 86
+
+                () -> testAddCard(johndoe2, 400, "4000003305061033",
+                        new TestHint(cardApi, "", "If checksum of card-number is wrong, " +
+                                "endpoint must respond with HTTP Bad Request status (400).")), // 87
+
+                () -> testAddCard(johndoe2, 200, "4000003305160034",
+                        new TestHint(cardApi, "", "A card must be added to Black List")), // 88
+
+                () -> testGetCard(johndoe2, 200, cardAnswer,
+                        new TestHint(cardApi, "", "Endpoint must responds with Black List")), // 89
+
+                () -> testDeleteCard(johndoe2, 200, "4000003305061034",
+                        new TestHint(cardApi, "", "Card must be removed from Black List")), // 90
+
+                () -> testDeleteCard(johndoe2, 404, "4000003305061034",
+                        new TestHint(cardApi, "", "If card-number not found in database," +
+                                " respond with the HTTP Not Found status (404).")), // 91
+
+                () -> testDeleteCard(johndoe2, 400, "400000330506103",
+                        new TestHint(cardApi, "", "If card-number doesn't have right format, " +
+                                "endpoint must respond with HTTP Bad Request status (400).")), // 92
+
+                () -> testGetCard(johndoe2, 200, cardAnswer2,
+                        new TestHint(cardApi, "", "Card must be removed from Black List")), // 93
+
+                // Test new validating
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, trP1,
+                        "PROHIBITED",  "ip",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - suspicious ip reason")), // 94
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, trP2,
+                        "PROHIBITED",  "card-number",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - stolen card reason")), // 95
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, trP3,
+                        "PROHIBITED",  "card-number, ip",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - stolen card, suspicious ip reasons")), // 96
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, trP4,
+                        "PROHIBITED",  "amount, card-number, ip",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - amount, stolen card, suspicious ip reasons")), // 97
+
+                // Test correlation rules
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr1IP,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 98
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr2IP,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 99
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr22IP,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 100
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr3IP,
+                        "MANUAL_PROCESSING",  "ip-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be MANUAL_PROCESSING" +
+                                " due to - ip correlation rule")), // 101
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr4IP,
+                        "PROHIBITED",  "ip-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - ip correlation rule")), // 102
+
+                () -> testAddCard(johndoe2, 200, "4000008449433403",
+                        new TestHint(cardApi, "", "A card must be added to Black List")), // 103
+
+                () -> testAddIP(johndoe2, 200, "192.168.1.5",
+                        new TestHint(ipApi, "", "IP must be added to Black List")), // 104
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr5IP,
+                        "PROHIBITED",  "amount, card-number, ip, ip-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - amount, card-number, ip, ip-correlation reasons")), // 105
+                //
+                () -> testDeleteCard(johndoe2, 200, "4000008449433403",
+                        new TestHint(cardApi, "", "Card must be removed from Black List")), // 106
+
+                () -> testDeleteIP(johndoe2, 200, "192.168.1.5",
+                        new TestHint(ipApi, "", "IP must be removed from Black List")), // 107
+
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr1Reg,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 108
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr2Reg,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 109
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr22Reg,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 110
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr3Reg,
+                        "MANUAL_PROCESSING",  "region-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be MANUAL_PROCESSING" +
+                                " due to - region correlation rule")), // 111
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr4Reg,
+                        "PROHIBITED",  "region-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - region correlation rule")), // 112
+
+                () -> testAddCard(johndoe2, 200, "4000008449433403",
+                        new TestHint(cardApi, "", "A card must be added to Black List")), // 113
+
+                () -> testAddIP(johndoe2, 200, "192.168.1.2",
+                        new TestHint(ipApi, "", "IP must be added to Black List")), // 114
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, corr5Reg,
+                        "PROHIBITED",  "amount, card-number, ip, region-correlation",
+                        new TestHint(transactionApi, "", "Transaction must be PROHIBITED" +
+                                " due to - amount, card-number, ip, region-correlation reasons")), // 115
+
+
+                // Stage 6 let's go
+
+                // Preparations
+                () -> testDeleteCard(johndoe2, 200, "4000008449433403",
+                        new TestHint(cardApi, "", "Card must be removed from Black List")), // 116
+
+                // Test history negative
+                () -> testGetTrByNumber(johndoe2, 404, historyAnswer2, "4000004938320896",
+                        new TestHint(historyApi + "/4000004938320896", "", "If transactions " +
+                                "for specified card number is not found in database," +
+                                " respond with the HTTP Not Found status (404).")), // 117
+
+                () -> testGetTrByNumber(johndoe2, 400, historyAnswer2, "4000008449433402",
+                        new TestHint(historyApi + "/4000008449433402", "", "If card-number " +
+                                "doesn't have right format (Luhn algo), respond with HTTP Bad Request status (400).")), // 118
+
+                // Test Feedback negative
+                () -> testFeed(johndoe2, johndoe2, 422, 0, "ALLOWED",
+                        new TestHint(transactionApi, "", "If feedback must throw Exception due to" +
+                                " table in description section, respond with HTTP Unprocessable Entity status 422.")), // 119
+
+                () -> testFeed(johndoe2, johndoe2, 422, 4, "MANUAL_PROCESSING",
+                        new TestHint(transactionApi, "", "If feedback must throw Exception due to" +
+                                " table in description section, respond with HTTP Unprocessable Entity status 422.")), // 120
+
+                () -> testFeed(johndoe2, johndoe2, 422, 7, "PROHIBITED",
+                        new TestHint(transactionApi, "", "If feedback must throw Exception due to" +
+                                " table in description section, respond with HTTP Unprocessable Entity status 422.")), // 121
+
+                () -> testNotFoundFeed(johndoe2, johndoe2, 404, 25, "PROHIBITED",
+                        new TestHint(transactionApi, "", "If transaction is not found in history," +
+                                " respond with the HTTP Not Found status (404).")), // 122
+
+                // test Role model
+                () -> testFeed(johndoe2, null, 401, 7, "PROHIBITED",
+                        new TestHint(transactionApi, "", "A user with role ANONYMOUS" +
+                                " must not have access to PUT " + transactionApi)), // 123
+
+                () -> testFeed(johndoe2, administrator, 403, 7, "PROHIBITED",
+                        new TestHint(transactionApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to PUT " + transactionApi)), // 124
+
+                () -> testFeed(johndoe2, johndoe3, 403, 7, "PROHIBITED",
+                        new TestHint(transactionApi, "", "A user with role MERCHANT" +
+                                " must not have access to PUT " + transactionApi)), // 125
+
+                () -> testGetTr(null, 401, historyAnswer,
+                        new TestHint(historyApi, "", "A user with role ANONYMOUS" +
+                                " must not have access to GET " + historyApi)), // 126
+
+                () -> testGetTrByNumber(null, 401, historyAnswer2, "4000003305160034",
+                        new TestHint(historyApi + "/4000003305160034", "", "A user with" +
+                                " role ANONYMOUS must not have access to GET " + historyApi)), // 127
+
+                () -> testGetTr(administrator, 403, historyAnswer,
+                        new TestHint(historyApi, "", "A user with role ADMINISTRATOR" +
+                                " must not have access to GET " + historyApi)), // 128
+
+                () -> testGetTrByNumber(administrator, 403, historyAnswer2, "4000003305160034",
+                        new TestHint(historyApi + "/4000003305160034", "", "A user with" +
+                                " role ADMINISTRATOR must not have access to GET " + historyApi)), // 129
+
+                () -> testGetTr(johndoe3, 403, historyAnswer,
+                        new TestHint(historyApi, "", "A user with role MERCHANT" +
+                                " must not have access to GET " + historyApi)), // 130
+
+                () -> testGetTrByNumber(johndoe3, 403, historyAnswer2, "4000003305160034",
+                        new TestHint(historyApi + "/4000003305160034", "", "A user with" +
+                                " role MERCHANT must not have access to GET " + historyApi)), // 131
+
+
+                // test History positive
+                () -> testGetTr(johndoe2, 200, historyAnswer,
+                        new TestHint(historyApi, "", "Endpoint must respond with the" +
+                                " HTTP OK status (200) and body with array of JSON objects representing transactions," +
+                                " sorted by id in ascending order")), // 132
+
+                () -> testGetTrByNumber(johndoe2, 200, historyAnswer2, "4000003305160034",
+                        new TestHint(historyApi + "/4000003305160034", "", "If transactions" +
+                                " for specified card number is found, respond with the HTTP OK status (200)")), // 133
+
+
+                // Test changing coefficients
+                // Result - MANUAL_PROCESSING, FeedBack - ALLOWED
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr9,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Transaction must be MANUAL_PROCESSING")), // 134
+
+                () -> testFeed(johndoe2, johndoe2, 200, 26, "ALLOWED",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 135
+
+                () -> testFeed(johndoe2, johndoe2, 409, 26, "PROHIBITED",
+                        new TestHint(transactionApi, "", "If feedback for specified transaction" +
+                                " is already in database, respond with the HTTP Conflict status (409).")), // 136
+
+                () -> testFeed(johndoe2, johndoe2, 400, 26, "ALLOWEDD",
+                        new TestHint(transactionApi, "", "If feedback doesn't have right format" +
+                                " (ALLOWED, MANUAL_PROCESSING, PROHIBITED), respond with HTTP Bad Request status (400).")), // 137
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr10,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 202, Manual = 1500. Transaction must be ALLOWED")), // 138
+
+
+                // Result - MANUAL_PROCESSING, FeedBack - PROHIBITED
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr11,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Transaction must be MANUAL_PROCESSING")), // 139
+
+                () -> testFeed(johndoe2, johndoe2, 200, 28, "PROHIBITED",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 140
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr12,
+                        "PROHIBITED",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 202, Manual = 1160. " +
+                                "Transaction must be PROHIBITED")), // 141
+
+
+                // Result - ALLOWED, FeedBack - MANUAL_PROCESSING
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 142
+
+                () -> testFeed(johndoe2, johndoe2, 200, 30, "MANUAL_PROCESSING",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 143
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr13,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 162, Manual = 1160. Transaction must be MANUAL_PROCESSING")), // 144
+
+
+                // Result - ALLOWED, FeedBack - PROHIBITED
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr1,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Transaction must be ALLOWED")), // 145
+
+                () -> testFeed(johndoe2, johndoe2, 200, 32, "PROHIBITED",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 146
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr14,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 130, Manual = 928. Transaction must be MANUAL_PROCESSING")), // 147
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr15,
+                        "PROHIBITED",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 130, Manual = 928. Transaction must be PROHIBITED")), // 148
+
+
+                // Result - PROHIBITED, FeedBack - ALLOWED
+                () -> testFeed(johndoe2, johndoe2, 200, 34, "ALLOWED",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 149
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr16,
+                        "ALLOWED",  "none",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 290, Manual = 929. Transaction must be ALLOWED")), // 150
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr15,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 290, Manual = 929. Transaction must be MANUAL_PROCESSING")), // 151
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr17,
+                        "PROHIBITED",  "amount",
+                        new TestHint(transactionApi, "", "PROHIBITED")), // 152
+
+
+                // Result - PROHIBITED, FeedBack - MANUAL_PROCESSING
+                () -> testFeed(johndoe2, johndoe2, 200, 37, "MANUAL_PROCESSING",
+                        new TestHint(transactionApi, "", "The limits of transaction validation updated." +
+                                "Endpoint responds with the HTTP OK status (200)")), // 153
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr17,
+                        "MANUAL_PROCESSING",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 290, Manual = 930. Transaction must be MANUAL_PROCESSING")), // 154
+
+                () -> restartApplication(), // 155
+
+                () -> testTransaction(johndoe3, transactionApi, "POST", 200, tr18,
+                        "PROHIBITED",  "amount",
+                        new TestHint(transactionApi, "", "Limits must be updated to:" +
+                                " Allow = 290, Manual = 930. Transaction must be PROHIBITED")), // 156
+
+        };
+    }
+  learner_created: false
+- name: src/antifraud/user/UserController.java
+  visible: true
+  text: |-
+    package antifraud.user;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.*;
+    import org.springframework.web.server.ResponseStatusException;
+
+    import javax.validation.Valid;
+    import java.util.List;
+    import java.util.Map;
+
+    @RestController
+    @RequestMapping("/api/auth")
+    @AllArgsConstructor
+    public class UserController {
+
+        UserService userService;
+
+        @PostMapping("/user")
+        @ResponseStatus(HttpStatus.CREATED)
+        User createUser(@Valid @RequestBody User user) {
+            return userService.register(user)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT));
+        }
+
+        @GetMapping("/list")
+        List<User> listUsers() {
+            return userService.listUsers();
+        }
+
+        @DeleteMapping("/user/{username}")
+        Map<String, String> delete(@PathVariable String username) {
+            if (userService.delete(username)) {
+                return Map.of(
+                        "username", username,
+                        "status", "Deleted successfully!"
+                );
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        }
+
+        @PutMapping("/role")
+        User changeRole(@RequestBody Map<String, String> nameAndRole) {
+            //Sends over the username and role to the service.
+            return userService.changeRole(nameAndRole.get("username"), nameAndRole.get("role"));
+        }
+
+        @PutMapping("/access")
+        Map<String, String> changeAccess(@RequestBody Map<String, String> nameAndAccess) {
+            //Sends over the username and access to the service.
+            return userService.changeAccess(nameAndAccess.get("username"), nameAndAccess.get("operation"));
+        }
+    }
+  learner_created: true
+- name: src/antifraud/creditcard/CreditCardRepository.java
+  visible: true
+  text: |
+    package antifraud.creditcard;
+
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.data.jpa.repository.Query;
+    import org.springframework.stereotype.Repository;
+
+    import java.util.Optional;
+
+    @Repository
+    public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
+        @Query(value = "SELECT * FROM CreditCard  WHERE number = ?1",
+                nativeQuery = true)
+        Optional<CreditCard> findByNumber(String number);
+
+    }
+  learner_created: true
+- name: src/antifraud/transaction/Transaction.java
+  visible: true
+  text: |
+    package antifraud.transaction;
+
+    import com.fasterxml.jackson.annotation.JsonProperty;
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
+    import org.springframework.format.annotation.DateTimeFormat;
+
+    import javax.persistence.*;
+    import javax.validation.constraints.NotEmpty;
+    import javax.validation.constraints.Positive;
+    import java.time.LocalDateTime;
+
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity
+    public class Transaction {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        private Long id;
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Positive
+        private long amount;
+
+        //Ip to check against db for banned list.
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @NotEmpty
+        private String ip;
+
+        //Credit card number.
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @NotEmpty
+        private String number;
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @NotEmpty
+        private String region;
+
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        private String result;
+
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        private String info;
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Column
+        @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
+        private LocalDateTime date;
+
+    }
+  learner_created: true
+- name: src/antifraud/ip/IpController.java
+  visible: true
+  text: |
+    package antifraud.ip;
+
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.*;
+    import org.springframework.web.server.ResponseStatusException;
+
+    import javax.validation.Valid;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.Optional;
+
+
+    @RestController
+    @RequestMapping("/api/antifraud")
+    @AllArgsConstructor
+    public class IpController {
+        IPService ipService;
+
+        @PostMapping("/suspicious-ip")
+        Ip registerIp(@Valid @RequestBody Ip ip) {
+            if (ipService.validateIpAddress(ip.getIp())) {
+                Optional<Ip> dbIp = ipService.findByNumber(ip.getIp());
+                if (dbIp.isPresent()) {
+                    throw  new ResponseStatusException(HttpStatus.CONFLICT);
+                } else {
+                    return ipService.saveIpAddress(ip);
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @DeleteMapping("/suspicious-ip/{ip}")
+        Map<String, String> deleteCard(@PathVariable String ip) {
+            //If the ip is invalid throws a Bad Request.
+            if (!ipService.validateIpAddress(ip)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            } else {
+                if (ipService.deleteIp(ip)) {
+                    return Map.of("status", "IP " + ip + " successfully removed!");
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                }
+            }
+        }
+
+        @GetMapping("/suspicious-ip")
+        List<Ip> getCards() {
+            List<Ip> ips = ipService.listIps();
+            if (ips == null) {
+                return List.of();
+            } else return ips;
+        }
+    }
+  learner_created: true
+- name: src/antifraud/creditcard/CreditCardController.java
+  visible: true
+  text: |
+    package antifraud.creditcard;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.*;
+    import org.springframework.web.server.ResponseStatusException;
+
+    import javax.validation.Valid;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.Optional;
+
+    @AllArgsConstructor
+    @RestController
+    @RequestMapping("/api/antifraud")
+    public class CreditCardController {
+
+        CreditCardService creditCardService;
+
+        @PostMapping("/stolencard")
+        CreditCard registerStolenCard(@Valid @RequestBody CreditCard cc) {
+            if (creditCardService.validateCardNumber(cc.getNumber())) {
+                Optional<CreditCard> dbCard = creditCardService.findCreditCard(cc.getNumber());
+                if (dbCard.isPresent()) {
+                    throw  new ResponseStatusException(HttpStatus.CONFLICT);
+                } else {
+                    return creditCardService.saveCreditCard(cc);
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @DeleteMapping("stolencard/{number}")
+        Map<String, String> deleteCard(@PathVariable String number) {
+            if (!creditCardService.validateCardNumber(number)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            } else {
+                if (creditCardService.deleteCreditCard(number)) {
+                    return Map.of("status", "Card " + number + " successfully removed!");
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                }
+            }
+        }
+
+        @GetMapping("/stolencard")
+        List<CreditCard> getCards() {
+            return creditCardService.listCards();
+        }
+    }
+  learner_created: true
+- name: src/antifraud/transaction/TransactionService.java
+  visible: true
+  text: "package antifraud.transaction;\n\nimport antifraud.creditcard.CreditCard;\n\
+    import antifraud.creditcard.CreditCardService;\nimport antifraud.ip.IPService;\n\
+    import antifraud.ip.Ip;\nimport lombok.AllArgsConstructor;\nimport org.springframework.stereotype.Service;\n\
+    \nimport java.time.LocalDateTime;\nimport java.time.format.DateTimeFormatter;\n\
+    import java.util.*;\n\n@AllArgsConstructor\n@Service\npublic class TransactionService\
+    \ {\n    IPService ipService;\n    CreditCardService creditCardService;\n    TransactionRepository\
+    \ transactionRepository;\n    public Transaction process(Transaction transaction)\
+    \ {\n        Optional<Ip> ip = ipService.findByNumber(transaction.getIp());\n\
+    \        Optional<CreditCard> cc = creditCardService.findCreditCard(transaction.getNumber());\n\
+    \n        StringJoiner info = new StringJoiner(\", \");\n        info.setEmptyValue(\"\
+    none\");\n        String result = \"\";\n\n        long amount = transaction.getAmount();\n\
+    \n        Map<String, String> tRegionAndIp = verifyByIpAndRegion(transaction);\n\
+    \n        if (amount <= 200 && !cc.isPresent() && !ip.isPresent()) {\n       \
+    \     result = \"ALLOWED\";\n        } else if (amount > 200 && amount <= 1500\
+    \ && !cc.isPresent() && !ip.isPresent()) {\n            result = \"MANUAL_PROCESSING\"\
+    ;\n            info.add(\"amount\");\n        } else if (amount > 1500 || cc.isPresent()\
+    \ || ip.isPresent()) {\n            if (amount > 1500) {\n                info.add(\"\
+    amount\");\n            }\n            if (cc.isPresent()) {\n               \
+    \ info.add(\"card-number\");\n            }\n            if (ip.isPresent()) {\n\
+    \                info.add(\"ip\");\n            }\n            result = \"PROHIBITED\"\
+    ;\n        }\n\n        if (tRegionAndIp.containsKey(\"MANUAL_PROCESSING\")) {\n\
+    \            result = \"MANUAL_PROCESSING\";\n            info.add(tRegionAndIp.get(\"\
+    MANUAL_PROCESSING\"));\n        } else if (tRegionAndIp.containsKey(\"PROHIBITED\"\
+    )) {\n            result = \"PROHIBITED\";\n            info.add(tRegionAndIp.get(\"\
+    PROHIBITED\"));\n        }\n\n        transaction.setInfo(info.toString());\n\
+    \        transaction.setResult(result);\n\n        //Saves a copy of all checked\
+    \ transactions to improve verification of future ones.\n        transactionRepository.save(transaction);\n\
+    \n        return transaction;\n    }\n\n    public boolean validateIp(String ip)\
+    \ {\n        return ipService.validateIpAddress(ip);\n    }\n\n    public boolean\
+    \ validateCard(String num) {\n        return creditCardService.validateCardNumber(num);\n\
+    \    }\n\n    public boolean validateRegion(String region) {\n        List<String>\
+    \ regionList = Arrays.asList(\"EAP\", \"ECA\", \"HIC\", \"LAC\", \"MENA\", \"\
+    SA\", \"SSA\");\n        return regionList.contains(region);\n    }\n\n    public\
+    \ boolean validateTime(String date) {\n        try {\n\n            LocalDateTime\
+    \ parseTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern(\"yyyy-MM-ddTHH:mm:ss\"\
+    ));\n\n            return true;\n        } catch(Exception e) {\n            return\
+    \ false;\n        }\n\n    }\n\n    public Map<String, String> verifyByIpAndRegion(Transaction\
+    \ t) {\n        //Gets all transactions from the db that match the card number\
+    \ and\n        //that are 1 hour earlier than our current time.\n        List<Transaction>\
+    \ transactionList = transactionRepository.\n                findByNumberAndTime(t.getNumber(),\
+    \ t.getDate().minusHours(1L) ,t.getDate());\n        Set<String> uniqueIP = new\
+    \ HashSet<>();\n        Set<String> uniqueRegion = new HashSet<>();\n\n\n\n  \
+    \      for (Transaction transaction: transactionList) {\n            //Ips need\
+    \ to be checked for uniqueness to validate transactions\n            //Sets aren't\
+    \ allowed to have duplicate elements.\n            //Checking for unique ips other\
+    \ than the provided transaction ip.\n            if (!uniqueIP.contains(transaction.getIp())\
+    \ && !transaction.getIp().equals(t.getIp())) {\n                uniqueIP.add(transaction.getIp());\n\
+    \            }\n            \n            //Regions need to be checked for uniqueness\
+    \ to validate transactions\n            //Checking for unique regions other than\
+    \ the provided transaction region.\n            if (!uniqueRegion.contains(transaction.getRegion())\
+    \ && !transaction.getRegion().equals(t.getRegion())) {\n                uniqueRegion.add(transaction.getRegion());\n\
+    \            }\n        }\n\n        int regionCount = uniqueRegion.size();\n\
+    \        int ipCount = uniqueIP.size();\n\n\n        //Filter conditions for determining\
+    \ if a transaction requires manual_processing or blocking.\n        if (regionCount\
+    \ > 2 && ipCount > 2) {\n            return Map.of(\"PROHIBITED\", \"ip-correlation,\
+    \ region-correlation\");\n        } else if (ipCount >2) {\n            return\
+    \ Map.of(\"PROHIBITED\", \"ip-correlation\");\n        } else if (regionCount\
+    \ >2) {\n            return Map.of(\"PROHIBITED\", \"region-correlation\");\n\
+    \        }else if (regionCount == 2 && ipCount == 2) {\n            return Map.of(\"\
+    MANUAL_PROCESSING\", \"ip-correlation, region-correlation\");\n        } else\
+    \ if (ipCount == 2) {\n            return Map.of(\"MANUAL_PROCESSING\", \"ip-correlation\"\
+    );\n        } else if (regionCount == 2) {\n            return Map.of(\"MANUAL_PROCESSING\"\
+    , \"region-correlation\");\n        }\n\n        //If none of the flags were triggered,\
+    \ we just return an empty map.\n        return Map.of();\n    }\n\n\n}"
+  learner_created: true
+- name: src/antifraud/creditcard/CreditCardService.java
+  visible: true
+  text: |
+    package antifraud.creditcard;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.data.domain.Sort;
+    import org.springframework.stereotype.Service;
+
+    import javax.transaction.Transactional;
+    import java.util.List;
+    import java.util.Optional;
+    @AllArgsConstructor
+    @Service
+    public class CreditCardService {
+        private final CreditCardRepository creditCardRepository;
+        public CreditCard saveCreditCard(CreditCard cc) {
+            return creditCardRepository.save(cc);
+        }
+
+        public Optional<CreditCard> findCreditCard(String number) {
+           return creditCardRepository.findByNumber(number);
+        }
+
+        //Searches for the card and deletes it after its found.
+        //Boolean helps to format the response request.
+        @Transactional
+        public boolean deleteCreditCard(String number) {
+            Optional<CreditCard> cc = creditCardRepository.findByNumber(number);
+            if (cc.isPresent()) {
+                creditCardRepository.delete(cc.get());
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public List<CreditCard> listCards() {
+            return creditCardRepository.findAll(
+                    Sort.sort(CreditCard.class).by(CreditCard::getId).ascending()
+            );
+        }
+        //Card number is validated using Luhn Algorithm implementation which was sourced from Geeksforgeeks.org
+        public boolean validateCardNumber(String number) {
+            int nDigits = number.length();
+            int nSum = 0;
+            boolean isSecond = false;
+            for (int i = nDigits - 1; i >= 0; i--)
+            {
+
+                int d = number.charAt(i) - '0';
+
+                if (isSecond)
+                    d = d * 2;
+
+                // We add two digits to handle
+                // cases that make two digits
+                // after doubling
+                nSum += d / 10;
+                nSum += d % 10;
+
+                isSecond = !isSecond;
+            }
+            return (nSum % 10 == 0);
+        }
+    }
+  learner_created: true
+- name: src/antifraud/transaction/TransactionController.java
+  visible: true
+  text: |-
+    package antifraud.transaction;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.server.ResponseStatusException;
+
+    import javax.validation.Valid;
+
+    @AllArgsConstructor
+    @RestController
+    @RequestMapping("/api/antifraud")
+    public class TransactionController {
+
+        TransactionService transactionService;
+
+        @PostMapping("/transaction")
+        Transaction transactionPost(@Valid @RequestBody Transaction request) {
+            if (transactionService.validateIp(request.getIp()) &&
+                    transactionService.validateCard(request.getNumber())) {
+                return transactionService.process(request);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+  learner_created: true
+- name: src/antifraud/ip/Ip.java
+  visible: true
+  text: |
+    package antifraud.ip;
+
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
+
+    import javax.persistence.*;
+    import javax.validation.constraints.NotEmpty;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity(name = "Ip")
+    public class Ip {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @NotEmpty
+        @Column(name = "number")
+        private String ip;
+    }
+  learner_created: true
+- name: src/antifraud/transaction/TransactionRepository.java
+  visible: true
+  text: |
+    package antifraud.transaction;
+
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.data.jpa.repository.Query;
+    import org.springframework.stereotype.Repository;
+
+    import java.time.LocalDateTime;
+    import java.util.List;
+
+    @Repository
+    public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+        @Query(value = "SELECT * FROM Transaction WHERE number =?1 AND date BETWEEN ?2 AND ?3",
+                nativeQuery = true)
+        List<Transaction> findByNumberAndTime(String number, LocalDateTime dt1, LocalDateTime dt2);
+    }
+  learner_created: true
+- name: src/antifraud/user/UserService.java
+  visible: true
+  text: |-
+    package antifraud.user;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.data.domain.Sort;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.security.core.userdetails.UserDetailsService;
+    import org.springframework.security.core.userdetails.UsernameNotFoundException;
+    import org.springframework.security.crypto.password.PasswordEncoder;
+    import org.springframework.stereotype.Service;
+    import org.springframework.web.server.ResponseStatusException;
+
+    import javax.transaction.Transactional;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.Optional;
+
+    @AllArgsConstructor
+    @Service
+    public class UserService implements UserDetailsService {
+        UserRepository userRepository;
+        PasswordEncoder passwordEncoder;
+
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            return userRepository.findByUsernameIgnoreCase(username).orElseThrow(() ->
+                    new UsernameNotFoundException("User " + username + " not found"));
+        }
+
+        @Transactional
+        public Optional<User> register(User user) {
+            if (userRepository.existsByUsernameIgnoreCase(user.getUsername())) {
+                return Optional.empty();
+            }
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = userRepository.save(user);
+
+            //Defaults our first user as the Admin and unlocks their account.
+            if (savedUser.getId()== 1L) {
+                //Gets the ADMINISTRATOR ROLE.
+                savedUser.setRole("ADMINISTRATOR");
+                savedUser.setEnabled(true);
+            } else {
+                //Gets the MERCHANT ROLE.
+                savedUser.setRole("MERCHANT");
+                savedUser.setEnabled(false);
+            }
+            return Optional.of(userRepository.save(savedUser));
+
+        }
+
+        public List<User> listUsers() {
+            return userRepository.findAll(
+                    Sort.sort(User.class).by(User::getId).ascending()
+            );
+        }
+
+        @Transactional
+        public boolean delete(String username) {
+            return userRepository.deleteByUsernameIgnoreCase(username) == 1;
+        }
+
+
+        @Transactional
+        //Checks the role of the user and determines if it can be reassigned to a support role.
+        public User changeRole(String userName, String role) {
+            Optional<User> user = userRepository.findByUsernameIgnoreCase(userName);
+            if (user.isPresent()) {
+                if (user.get().getRole().equals("SUPPORT")) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT);
+                }
+                else if (role.equals("SUPPORT")){
+                    user.get().setRole(role);
+                    user.get().setEnabled(true);
+                    return userRepository.save(user.get());
+                } else {
+                   throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Role");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User located");
+            }
+        }
+
+        @Transactional
+        //Locks or unlocks the user account.
+        public Map<String, String> changeAccess(String userName, String operation) {
+            Optional<User> user = userRepository.findByUsernameIgnoreCase(userName);
+
+            if (user.isPresent()) {
+                if (operation.equals("UNLOCK")) {
+                    user.get().setEnabled(true);
+                } else if (operation.equals("LOCK")) {
+                    user.get().setEnabled(false);
+                }
+                userRepository.save(user.get());
+                return Map.of("status", "User " + userName + " " + operation.toLowerCase() + "ed!");
+            } else {
+                throw new UsernameNotFoundException("User " + userName + " not found");
+            }
+        }
+    }
+  learner_created: true
+- name: src/antifraud/ip/IPRepository.java
+  visible: true
+  text: |
+    package antifraud.ip;
+
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.data.jpa.repository.Query;
+    import org.springframework.stereotype.Repository;
+
+    import java.util.Optional;
+    @Repository
+    public interface IPRepository extends JpaRepository<Ip, Long> {
+        @Query(value = "SELECT * FROM Ip  WHERE number = ?1",
+                nativeQuery = true)
+        Optional<Ip> findByNumber(String number);
+    }
+  learner_created: true
+- name: src/antifraud/config/SecurityConfig.java
+  visible: true
+  text: |-
+    package antifraud.config;
+
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.http.HttpMethod;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.security.authentication.AuthenticationProvider;
+    import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+    import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+    import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+    import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+    import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+    import org.springframework.security.config.http.SessionCreationPolicy;
+    import org.springframework.security.core.userdetails.UserDetailsService;
+    import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+    import org.springframework.security.crypto.password.PasswordEncoder;
+    import org.springframework.security.web.AuthenticationEntryPoint;
+
+
+    @EnableWebSecurity
+    public class SecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        UserDetailsService userDetailsService;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(authenticationProvider());
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            //@formatter:off
+            http.httpBasic()
+                    .authenticationEntryPoint(restAuthenticationEntryPoint()) // Handles auth error
+                    .and()
+                    .csrf()
+                    .disable()
+                    .headers()
+                    .frameOptions()
+                    .disable() // for Postman, the H2 console
+                    .and()
+                    .authorizeRequests() // manage access
+                    .mvcMatchers(HttpMethod.GET, "/api/auth/list").hasAnyAuthority("ADMINISTRATOR", "SUPPORT")
+                    .mvcMatchers(HttpMethod.DELETE, "/api/auth/user/*").hasAuthority("ADMINISTRATOR")
+                    .mvcMatchers(HttpMethod.POST, "/api/antifraud/transaction").hasAuthority("MERCHANT")
+                    .mvcMatchers(HttpMethod.PUT, "api/auth/role").hasAuthority("ADMINISTRATOR")
+                    .mvcMatchers(HttpMethod.PUT, "api/auth/access").hasAuthority("ADMINISTRATOR")
+                    .mvcMatchers(HttpMethod.POST,"api/antifraud/suspicious-ip").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.DELETE, "api/antifraud/suspicious-ip/*").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.GET, "api/antifraud/suspicious-ip").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.POST,"api/antifraud/stolencard").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.DELETE, "api/antifraud/stolencard").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.GET, "api/antifraud/stolencard").hasAuthority("SUPPORT")
+                    .mvcMatchers(HttpMethod.POST, "/api/auth/user").permitAll()
+                    .mvcMatchers("/actuator/shutdown").permitAll() // needs to run test
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // no session
+            //@formatter:on
+        }
+
+        @Bean
+        AuthenticationEntryPoint restAuthenticationEntryPoint() {
+            return (request, response, authException) -> response.sendError(
+                    HttpStatus.UNAUTHORIZED.value(), authException.getMessage());
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+        @Bean
+        public AuthenticationProvider authenticationProvider() {
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+            provider.setPasswordEncoder(passwordEncoder());
+            provider.setUserDetailsService(userDetailsService);
+            return provider;
+        }
+    }
+  learner_created: true
+- name: src/antifraud/user/UserRepository.java
+  visible: true
+  text: |-
+    package antifraud.user;
+
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.stereotype.Repository;
+
+    import java.util.Optional;
+
+    @Repository
+    public interface UserRepository extends JpaRepository<User, Long> {
+        Optional<User> findByUsernameIgnoreCase(String username);
+        boolean existsByUsernameIgnoreCase(String username);
+        int deleteByUsernameIgnoreCase(String username);
+    }
+  learner_created: true
+- name: src/antifraud/ip/IPService.java
+  visible: true
+  text: |
+    package antifraud.ip;
+
+    import lombok.AllArgsConstructor;
+    import org.springframework.data.domain.Sort;
+    import org.springframework.stereotype.Service;
+
+    import javax.transaction.Transactional;
+    import java.util.List;
+    import java.util.Optional;
+    import java.util.regex.Pattern;
+
+    @AllArgsConstructor
+    @Service
+    public class IPService {
+        private final String IPV4_REGEX = "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]" +
+                "\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))";
+        private final Pattern IPV4_PATTERN = Pattern.compile(IPV4_REGEX);
+        private final IPRepository ipRepository;
+
+        public Ip saveIpAddress(Ip ip) {
+            return ipRepository.save(ip);
+        }
+
+        public Optional<Ip> findByNumber(String number) {
+            return ipRepository.findByNumber(number);
+        }
+
+        //Searches for the card and deletes it after its found.
+        //Boolean helps to format the response request.
+        @Transactional
+        public boolean deleteIp(String number) {
+            Optional<Ip> ip = ipRepository.findByNumber(number);
+            if (ip.isPresent()) {
+                ipRepository.deleteById(ip.get().getId());
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public List<Ip> listIps() {
+            return ipRepository.findAll(
+                    Sort.sort(Ip.class).by(Ip::getId).ascending()
+            );
+        }
+
+        public boolean validateIpAddress(String number) {
+            return IPV4_PATTERN.matcher(number).matches();
+        }
+    }
+  learner_created: true
+- name: src/antifraud/creditcard/CreditCard.java
+  visible: true
+  text: |
+    package antifraud.creditcard;
+
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
+
+    import javax.persistence.*;
+    import javax.validation.constraints.NotEmpty;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity
+    @Table(name = "CREDITCARD")
+    public class CreditCard {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @NotEmpty
+        private String number;
+    }
+  learner_created: true
+- name: src/antifraud/user/User.java
+  visible: true
+  text: |-
+    package antifraud.user;
+
+    import com.fasterxml.jackson.annotation.JsonProperty;
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
+    import org.springframework.security.core.GrantedAuthority;
+    import org.springframework.security.core.authority.SimpleGrantedAuthority;
+    import org.springframework.security.core.userdetails.UserDetails;
+
+    import javax.persistence.*;
+    import javax.validation.constraints.NotEmpty;
+    import java.util.ArrayList;
+    import java.util.Collection;
+    import java.util.List;
+
+    @Entity
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class User implements UserDetails {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        private Long id;
+
+        @NotEmpty
+        private String name;
+
+        @NotEmpty
+        @Column(unique = true)
+        private String username;
+
+        @NotEmpty
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        private String password;
+
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        private String role;
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        private boolean isEnabled = false;
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(role));
+
+            return authorities;
+        }
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Override
+        public boolean isAccountNonLocked() {
+            return isEnabled;
+        }
+
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+    }
+  learner_created: true
+- name: src/antifraud/transaction/TransactionResponse.java
+  visible: true
+  learner_created: true
+- name: src/antifraud/transaction/TransactionFeedBack.java
+  visible: true
+  learner_created: true
+- name: src/antifraud/cardlimit/CardLimit.java
+  visible: true
+  learner_created: true
+- name: src/antifraud/cardlimit/CardLimitRepository.java
+  visible: true
+  learner_created: true
+- name: src/antifraud/cardlimit/CardLimitService.java
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/18072#comment
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Fri, 17 Jun 2022 20:56:55 UTC
+record: 6

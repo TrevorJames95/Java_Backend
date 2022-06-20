@@ -1,0 +1,2065 @@
+2022-06-13 18:05:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "IP.NUMBER" not found; SQL statement:
+SELECT * FROM Ip ip WHERE ip.number = ? [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:163)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:145)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:190)
+	at org.h2.command.dml.Select.prepare(Select.java:1209)
+	at org.h2.command.Parser.prepareCommand(Parser.java:744)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:76)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:352)
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:337)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:149)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:176)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:151)
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:2085)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2022)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2000)
+	at org.hibernate.loader.Loader.doQuery(Loader.java:951)
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:352)
+	at org.hibernate.loader.Loader.doList(Loader.java:2831)
+	at org.hibernate.loader.Loader.doList(Loader.java:2813)
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2645)
+	at org.hibernate.loader.Loader.list(Loader.java:2640)
+	at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:338)
+	at org.hibernate.internal.SessionImpl.listCustomQuery(SessionImpl.java:2139)
+	at org.hibernate.internal.AbstractSharedSessionContract.list(AbstractSharedSessionContract.java:1163)
+	at org.hibernate.query.internal.NativeQueryImpl.doList(NativeQueryImpl.java:173)
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
+	at org.hibernate.query.internal.AbstractProducedQuery.getSingleResult(AbstractProducedQuery.java:1581)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:196)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:154)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor$QueryMethodInvoker.invoke(QueryExecutorMethodInterceptor.java:195)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at jdk.proxy3/jdk.proxy3.$Proxy137.findByNumber(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:205)
+	at jdk.proxy3/jdk.proxy3.$Proxy102.findByNumber(Unknown Source)
+	at antifraud.ip.IPService.findByNumber(IPService.java:27)
+	at antifraud.ip.IPService$$FastClassBySpringCGLIB$$589759b3.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:687)
+	at antifraud.ip.IPService$$EnhancerBySpringCGLIB$$6c703d6f.findByNumber(<generated>)
+	at antifraud.transaction.TransactionService.process(TransactionService.java:27)
+	at antifraud.transaction.TransactionController.transactionPost(TransactionController.java:20)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:170)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:225)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:204)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-13 18:08:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "IP.NUMBER" not found; SQL statement:
+SELECT ip FROM Ip ip WHERE ip.number = ? [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:163)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:145)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:190)
+	at org.h2.command.dml.Select.prepare(Select.java:1209)
+	at org.h2.command.Parser.prepareCommand(Parser.java:744)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:76)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:352)
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:337)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:149)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:176)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:151)
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:2085)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2022)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2000)
+	at org.hibernate.loader.Loader.doQuery(Loader.java:951)
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:352)
+	at org.hibernate.loader.Loader.doList(Loader.java:2831)
+	at org.hibernate.loader.Loader.doList(Loader.java:2813)
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2645)
+	at org.hibernate.loader.Loader.list(Loader.java:2640)
+	at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:338)
+	at org.hibernate.internal.SessionImpl.listCustomQuery(SessionImpl.java:2139)
+	at org.hibernate.internal.AbstractSharedSessionContract.list(AbstractSharedSessionContract.java:1163)
+	at org.hibernate.query.internal.NativeQueryImpl.doList(NativeQueryImpl.java:173)
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
+	at org.hibernate.query.internal.AbstractProducedQuery.getSingleResult(AbstractProducedQuery.java:1581)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:196)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:154)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor$QueryMethodInvoker.invoke(QueryExecutorMethodInterceptor.java:195)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at jdk.proxy3/jdk.proxy3.$Proxy140.findByNumber(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:205)
+	at jdk.proxy3/jdk.proxy3.$Proxy102.findByNumber(Unknown Source)
+	at antifraud.ip.IPService.findByNumber(IPService.java:27)
+	at antifraud.ip.IPService$$FastClassBySpringCGLIB$$589759b3.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:687)
+	at antifraud.ip.IPService$$EnhancerBySpringCGLIB$$a518679.findByNumber(<generated>)
+	at antifraud.transaction.TransactionService.process(TransactionService.java:27)
+	at antifraud.transaction.TransactionController.transactionPost(TransactionController.java:20)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:170)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:225)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:204)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-13 18:09:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard cc WHERE cc.number = ? [42102-200]
+2022-06-13 18:10:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT cc FROM CreditCard cc WHERE cc.number = ? [42102-200]
+2022-06-13 18:12:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT cc FROM CreditCard cc WHERE cc.number = ? [42102-200]
+2022-06-13 18:14:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard cc WHERE cc.number = ? [42102-200]
+2022-06-13 18:15:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.number = ? [42102-200]
+2022-06-13 18:17:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.number = ? [42102-200]
+2022-06-13 18:19:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "IP.IP" not found; SQL statement:
+SELECT * FROM Ip ip WHERE ip.ip = ? [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:163)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:145)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:190)
+	at org.h2.command.dml.Select.prepare(Select.java:1209)
+	at org.h2.command.Parser.prepareCommand(Parser.java:744)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:76)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:352)
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:337)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:149)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:176)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:151)
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:2085)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2022)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2000)
+	at org.hibernate.loader.Loader.doQuery(Loader.java:951)
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:352)
+	at org.hibernate.loader.Loader.doList(Loader.java:2831)
+	at org.hibernate.loader.Loader.doList(Loader.java:2813)
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2645)
+	at org.hibernate.loader.Loader.list(Loader.java:2640)
+	at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:338)
+	at org.hibernate.internal.SessionImpl.listCustomQuery(SessionImpl.java:2139)
+	at org.hibernate.internal.AbstractSharedSessionContract.list(AbstractSharedSessionContract.java:1163)
+	at org.hibernate.query.internal.NativeQueryImpl.doList(NativeQueryImpl.java:173)
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
+	at org.hibernate.query.internal.AbstractProducedQuery.getSingleResult(AbstractProducedQuery.java:1581)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:196)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:154)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor$QueryMethodInvoker.invoke(QueryExecutorMethodInterceptor.java:195)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at jdk.proxy3/jdk.proxy3.$Proxy140.findByNumber(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:205)
+	at jdk.proxy3/jdk.proxy3.$Proxy102.findByNumber(Unknown Source)
+	at antifraud.ip.IPService.findByNumber(IPService.java:27)
+	at antifraud.ip.IPService$$FastClassBySpringCGLIB$$589759b3.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:687)
+	at antifraud.ip.IPService$$EnhancerBySpringCGLIB$$13f553ff.findByNumber(<generated>)
+	at antifraud.transaction.TransactionService.process(TransactionService.java:27)
+	at antifraud.transaction.TransactionController.transactionPost(TransactionController.java:20)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:170)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:225)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:204)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-13 18:20:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.number = ? [42102-200]
+2022-06-13 18:33:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.number = ? [42102-200]
+2022-06-13 18:35:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "IP.NUMBER" not found; SQL statement:
+SELECT * FROM Ip ip WHERE ip.number = ? [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:163)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:145)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:190)
+	at org.h2.command.dml.Select.prepare(Select.java:1209)
+	at org.h2.command.Parser.prepareCommand(Parser.java:744)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:76)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:352)
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:337)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:149)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:176)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:151)
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:2085)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2022)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2000)
+	at org.hibernate.loader.Loader.doQuery(Loader.java:951)
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:352)
+	at org.hibernate.loader.Loader.doList(Loader.java:2831)
+	at org.hibernate.loader.Loader.doList(Loader.java:2813)
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2645)
+	at org.hibernate.loader.Loader.list(Loader.java:2640)
+	at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:338)
+	at org.hibernate.internal.SessionImpl.listCustomQuery(SessionImpl.java:2139)
+	at org.hibernate.internal.AbstractSharedSessionContract.list(AbstractSharedSessionContract.java:1163)
+	at org.hibernate.query.internal.NativeQueryImpl.doList(NativeQueryImpl.java:173)
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
+	at org.hibernate.query.internal.AbstractProducedQuery.getSingleResult(AbstractProducedQuery.java:1581)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:196)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:154)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor$QueryMethodInvoker.invoke(QueryExecutorMethodInterceptor.java:195)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at jdk.proxy3/jdk.proxy3.$Proxy139.findByNumber(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:205)
+	at jdk.proxy3/jdk.proxy3.$Proxy102.findByNumber(Unknown Source)
+	at antifraud.ip.IPService.findByNumber(IPService.java:27)
+	at antifraud.ip.IPService$$FastClassBySpringCGLIB$$589759b3.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:687)
+	at antifraud.ip.IPService$$EnhancerBySpringCGLIB$$61fb2d5.findByNumber(<generated>)
+	at antifraud.transaction.TransactionService.process(TransactionService.java:27)
+	at antifraud.transaction.TransactionController.transactionPost(TransactionController.java:20)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:170)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:225)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:204)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-13 18:36:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.numbers = ? [42102-200]
+2022-06-13 18:37:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.numbers = ? [42102-200]
+2022-06-13 18:44:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard c WHERE c.numbers = ? [42102-200]
+2022-06-13 18:45:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard  WHERE number = ? [42102-200]
+2022-06-13 19:25:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard  WHERE number = ? [42102-200]
+2022-06-15 10:07:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "DATETIME" not found; SQL statement:
+SELECT * FROM Transaction WHERE number =? AND dateTime BETWEEN ? AND ? [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:163)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:145)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:191)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:135)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:136)
+	at org.h2.command.dml.Select.prepare(Select.java:1209)
+	at org.h2.command.Parser.prepareCommand(Parser.java:744)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:76)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:352)
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:337)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:149)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:176)
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:151)
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:2085)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2022)
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:2000)
+	at org.hibernate.loader.Loader.doQuery(Loader.java:951)
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:352)
+	at org.hibernate.loader.Loader.doList(Loader.java:2831)
+	at org.hibernate.loader.Loader.doList(Loader.java:2813)
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2645)
+	at org.hibernate.loader.Loader.list(Loader.java:2640)
+	at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:338)
+	at org.hibernate.internal.SessionImpl.listCustomQuery(SessionImpl.java:2139)
+	at org.hibernate.internal.AbstractSharedSessionContract.list(AbstractSharedSessionContract.java:1163)
+	at org.hibernate.query.internal.NativeQueryImpl.doList(NativeQueryImpl.java:173)
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
+	at org.hibernate.query.Query.getResultList(Query.java:165)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$CollectionExecution.doExecute(JpaQueryExecution.java:126)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:154)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor$QueryMethodInvoker.invoke(QueryExecutorMethodInterceptor.java:195)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at jdk.proxy3/jdk.proxy3.$Proxy145.findByNumberAndTime(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:205)
+	at jdk.proxy3/jdk.proxy3.$Proxy103.findByNumberAndTime(Unknown Source)
+	at antifraud.transaction.TransactionService.verifyByIpAndRegion(TransactionService.java:90)
+	at antifraud.transaction.TransactionService.process(TransactionService.java:32)
+	at antifraud.transaction.TransactionController.transactionPost(TransactionController.java:24)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:170)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:225)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:204)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:282)
+	at org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:279)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.base/javax.security.auth.Subject.doAsPrivileged(Subject.java:584)
+	at org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:314)
+	at org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:253)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:191)
+	at org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:145)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-16 11:50:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 11:54:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 11:55:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 11:56:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:01:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:03:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:06:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:10:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:21:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:23:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:23:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:26:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:29:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:36:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:37:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 12:38:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] VARCHAR(255),
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit varchar(255),
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 15:58:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 15:58:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:03:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:03:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:05:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:06:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:06:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:11:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:11:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:12:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE TRANSACTION (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        AMOUNT BIGINT NOT NULL,
+        DATE TIMESTAMP,
+        FEEDBACK VARCHAR(255),
+        INFO VARCHAR(255),
+        IP VARCHAR(255),
+        LIMIT[*] BIGINT NOT NULL,
+        NUMBER VARCHAR(255),
+        REGION VARCHAR(255),
+        RESULT VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table transaction (
+       id bigint generated by default as identity,
+        amount bigint not null,
+        date timestamp,
+        feedback varchar(255),
+        info varchar(255),
+        ip varchar(255),
+        limit bigint not null,
+        number varchar(255),
+        region varchar(255),
+        result varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:12:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT TRANSACTIO0_.ID AS ID1_2_, TRANSACTIO0_.AMOUNT AS AMOUNT2_2_, TRANSACTIO0_.DATE AS DATE3_2_, TRANSACTIO0_.FEEDBACK AS FEEDBACK4_2_, TRANSACTIO0_.INFO AS INFO5_2_, TRANSACTIO0_.IP AS IP6_2_, TRANSACTIO0_.LIMIT[*] AS LIMIT7_2_, TRANSACTIO0_.NUMBER AS NUMBER8_2_, TRANSACTIO0_.REGION AS REGION9_2_, TRANSACTIO0_.RESULT AS RESULT10_2_ FROM TRANSACTION TRANSACTIO0_ ORDER BY TRANSACTIO0_.ID ASC"; expected "identifier"; SQL statement:
+select transactio0_.id as id1_2_, transactio0_.amount as amount2_2_, transactio0_.date as date3_2_, transactio0_.feedback as feedback4_2_, transactio0_.info as info5_2_, transactio0_.ip as ip6_2_, transactio0_.limit as limit7_2_, transactio0_.number as number8_2_, transactio0_.region as region9_2_, transactio0_.result as result10_2_ from transaction transactio0_ order by transactio0_.id asc [42001-200]
+2022-06-16 16:16:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITCARD (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditcard (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:16:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard  WHERE number = ? [42102-200]
+2022-06-16 16:24:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:24:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard  WHERE number = ? [42102-200]
+2022-06-16 16:25:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:25:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITCARD" not found; SQL statement:
+SELECT * FROM CreditCard  WHERE number = ? [42102-200]
+2022-06-16 16:25:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:25:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:26:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:26:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CARD_LIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table card_limit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:33:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 16:33:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:12:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:12:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:12:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITLIMIT" not found; SQL statement:
+insert into creditlimit (id, limit, number) values (null, ?, ?) [42102-200]
+2022-06-16 17:15:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:15:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:15:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CREDITLIMIT" not found; SQL statement:
+insert into creditlimit (id, limit, number) values (null, ?, ?) [42102-200]
+2022-06-16 17:22:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-16 17:22:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:14:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:14:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:19:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:19:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:20:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:20:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "
+    CREATE TABLE CREDITLIMIT (
+       ID BIGINT GENERATED BY DEFAULT AS IDENTITY,
+        LIMIT[*] INTEGER NOT NULL,
+        NUMBER VARCHAR(255),
+        PRIMARY KEY (ID)
+    )"; expected "identifier"; SQL statement:
+
+    create table creditlimit (
+       id bigint generated by default as identity,
+        limit integer not null,
+        number varchar(255),
+        primary key (id)
+    ) [42001-200]
+2022-06-17 11:47:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CARDLIMIT" not found; SQL statement:
+SELECT * FROM CARDLIMIT  WHERE number = ? [42102-200]
+2022-06-17 11:49:42 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CARDLIMIT" not found; SQL statement:
+SELECT * FROM CARDLIMIT  WHERE number = ? [42102-200]
